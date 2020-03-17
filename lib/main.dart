@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopapp/screens/products_overview_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,33 +8,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'My Shop',
       theme: ThemeData(
-              primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue,
+        textTheme: TextTheme(headline6: TextStyle(color: Colors.black)),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-       return Scaffold(
-      appBar: AppBar(
-          title: Text("MyShop"),
-      ),
-         body: Text("Time to build a shop!"),
+      home: ProductsOverviewScreen(),
     );
   }
 }
