@@ -19,7 +19,8 @@ class ProductItem extends StatelessWidget {
       child: GridTile(
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(ProductDetailScreen.routeName, arguments: product.id);
+            Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                arguments: product.id);
           },
           child: Image.network(
             product.imageUrl,
@@ -28,13 +29,18 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black12,
-          leading: IconButton(
-            icon: Icon(
-              product.isFavorite? Icons.favorite : Icons.favorite_border,
-              color: Theme.of(context).accentColor,
-            ),
-            onPressed: () {
-              product.toggleFavoriteStatus();},
+          leading: Consumer<Product>(
+            builder: (BuildContext context, Product product, Widget child) {
+              return IconButton(
+                icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Theme.of(context).accentColor,
+                ),
+                onPressed: () {
+                  product.toggleFavoriteStatus();
+                },
+              );
+            },
           ),
           title: Text(
             product.title,
@@ -47,8 +53,7 @@ class ProductItem extends StatelessWidget {
               Icons.shopping_cart,
               color: Theme.of(context).accentColor,
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ),
       ),
