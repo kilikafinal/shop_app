@@ -4,6 +4,7 @@ import 'package:shopapp/providers/Product.dart';
 import 'package:shopapp/providers/cart.dart';
 import 'package:shopapp/providers/products.dart';
 import 'package:shopapp/screens/cart_screen.dart';
+import 'package:shopapp/widgets/app_drawer.dart';
 import 'package:shopapp/widgets/badge.dart';
 import 'package:shopapp/widgets/products_grid.dart';
 
@@ -23,6 +24,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         title: Text("My Shop"),
         actions: <Widget>[
