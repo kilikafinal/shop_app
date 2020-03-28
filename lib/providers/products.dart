@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopapp/providers/Product.dart';
 
@@ -45,12 +46,34 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  List<Product> get favoriteItems{
+  List<Product> get favoriteItems {
     return _items.where((element) => element.isFavorite).toList();
   }
 
-  void addProduct() {
-//    _items.add(product);
+  void addProduct(Product product) {
+    final newProduct = Product(
+      title: product.title,
+      description: product.description,
+      imageUrl: product.imageUrl,
+      price: product.price,
+      id: DateTime.now().toString(),
+    );
+
+    _items.add(newProduct);
+    notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    final prodIndex = _items.indexWhere((element) => element.id == product.id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = product;
+      notifyListeners();
+    } else {
+      print("Couldnt find ID for product to update");
+    }
+  }
+  void deleteProduct(String id){
+    _items.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }
