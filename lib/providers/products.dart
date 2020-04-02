@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shopapp/models/http_exception.dart';
 import 'package:shopapp/providers/Product.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,6 +77,15 @@ class Products with ChangeNotifier {
   void updateProduct(Product product) {
     final prodIndex = _items.indexWhere((element) => element.id == product.id);
     if (prodIndex >= 0) {
+      final url =
+          "https://fluter-db.firebaseio.com/products/${product.id}.json";
+      http.patch(url,
+          body: json.encode({
+            "title": product.title,
+            "description": product.description,
+            "imageUrl": product.imageUrl,
+            "price": product.price,
+          }));
       _items[prodIndex] = product;
       notifyListeners();
     } else {
@@ -83,8 +93,19 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
+    final url = "https://fluter-db.firebaseio.com/products/$id.json";
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    var existingProduct = _items[existingProductIndex];
     _items.removeWhere((element) => element.id == id);
     notifyListeners();
+    final response = await http.delete(url);
+    if (response.statusCode > 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException("Could not delete product");
+    }
+    existingProduct = null;
   }
 }
