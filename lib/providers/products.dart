@@ -8,6 +8,9 @@ import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
+  String authToken;
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -22,7 +25,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = "https://fluter-db.firebaseio.com/products.json";
+    final url =
+        "https://fluter-db.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.get(url);
       print(json.decode(response.body));
@@ -45,7 +49,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = "https://fluter-db.firebaseio.com/products.json";
+    final url = "https://fluter-db.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.post(
         url,
@@ -78,7 +82,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((element) => element.id == product.id);
     if (prodIndex >= 0) {
       final url =
-          "https://fluter-db.firebaseio.com/products/${product.id}.json";
+          "https://fluter-db.firebaseio.com/products/${product.id}.json?auth=$authToken";
       http.patch(url,
           body: json.encode({
             "title": product.title,
@@ -94,7 +98,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = "https://fluter-db.firebaseio.com/products/$id.json";
+    final url = "https://fluter-db.firebaseio.com/products/$id.json?auth=$authToken";
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     var existingProduct = _items[existingProductIndex];
